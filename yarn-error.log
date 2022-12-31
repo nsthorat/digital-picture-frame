@@ -1,0 +1,35 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn
+
+PATH: 
+  /Users/niku/.sdkman/candidates/java/current/bin:/Users/niku/Code/bin/google-cloud-sdk/bin:/Users/niku/.pyenv/shims:/Users/niku/Code/miniforge3/bin:/Users/niku/Code/miniforge3/condabin:/usr/local/bin:/Users/niku/Code/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/niku/Library/Python/2.7/bin:/opt/homebrew/bin:/Library/Apple/usr/bin
+
+Yarn version: 
+  1.22.17
+
+Node version: 
+  16.13.0
+
+Platform: 
+  darwin arm64
+
+Trace: 
+  SyntaxError: /Users/niku/Code/digital-picture-frame/package.json: Unexpected token } in JSON at position 56
+      at JSON.parse (<anonymous>)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/usr/local/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "devDependencies": {
+      "http-server": "14.1.1",
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
