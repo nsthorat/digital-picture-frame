@@ -45,7 +45,6 @@ export const WEBPACK_CONFIG: Configuration = {
       },
       {
         test: /\.css$/i,
-        include: [path.resolve("src/server/web/")],
         use: ["style-loader", "css-loader", "postcss-loader"],
       },
     ],
