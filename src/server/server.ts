@@ -64,16 +64,19 @@ app.get("/*", (_, res) => {
   res.sendFile(path.resolve(indexHtmlPath, "index.html"));
 });
 
-function download(uri: string, filename: string): Promise<void> {
-  return new Promise((resolve, _) => {
+async function download(uri: string, filename: string): Promise<void> {
+  const filenameTmp = filename + "_tmp";
+
+  await new Promise((resolve, _) => {
     request.head(uri, function (err: any, res: any, body: any) {
       [err, body];
       console.log("content-type:", res.headers["content-type"]);
       console.log("content-length:", res.headers["content-length"]);
 
-      request(uri).pipe(fs.createWriteStream(filename)).on("close", resolve);
+      request(uri).pipe(fs.createWriteStream(filenameTmp)).on("close", resolve);
     });
   });
+  fs.renameSync(filenameTmp, filename);
 }
 async function main() {
   await login();

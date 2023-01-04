@@ -22,7 +22,7 @@ body {
   margin: auto;
 }
 .preview-image {
-  width: 600px;
+  width: 100%;
 }
 
 .main-area-row {
