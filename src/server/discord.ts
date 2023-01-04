@@ -138,8 +138,12 @@ export async function getImage(seed: number, prompt: string): Promise<ImageResul
       for (let i = 0; i < imageOutputs.length; i++) {
         //await driver.wait(until.elementLocated(upscaleButtonPath));
         const src = await imageOutputs[i].getAttribute("src");
-        if (src.startsWith("https://media.discordapp.net/")) {
-          finalSrc = src;
+        console.log(src);
+        const prefix = "https://media.discordapp.net/";
+        if (src.startsWith(prefix)) {
+          // Get the full size one from the CDN.
+          finalSrc = src.replace(prefix, "https://cdn.discordapp.com/");
+          console.log(finalSrc);
           break;
         }
       }
