@@ -18,7 +18,10 @@ export async function login() {
 
   await driver.get(DISCORD_SERVER_URL);
 
-  const emailInput = driver.findElement(By.css(`input[name='email']`));
+  const emailInputPath = By.css(`input[name='email']`);
+  await driver.wait(until.elementLocated(emailInputPath));
+  const emailInput = driver.findElement(emailInputPath);
+
   emailInput.sendKeys(USERNAME);
 
   const passwordInput = driver.findElement(By.css(`input[name='password']`));
