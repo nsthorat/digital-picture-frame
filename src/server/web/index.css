@@ -8,13 +8,21 @@ body {
   object-position: center;
   object-fit: cover;
 }
+.padded {
+  max-height: 100%;
+  max-width: 100%;
+}
 
 .container {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: black;
 }
-.prompt-container {
+.interface-container {
   display: flex;
   flex-direction: column;
   justify-content: center;

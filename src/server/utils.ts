@@ -1,6 +1,7 @@
 import fs from "fs";
+import { ImageInfo } from "./web/types";
 
-export const getImagesByDate = async (dir: string) => {
+export const getImagesByDate = async (dir: string): Promise<ImageInfo[]> => {
   const files = await fs.promises.readdir(dir);
 
   return files

@@ -7,6 +7,8 @@ import request from "request";
 import { DIST_PATH, DIST_STATIC_PATH, SERVER_PORT, STATIC_FOLDER } from "./constants";
 import { enterPrompt, getImage, login } from "./discord";
 import { getImagesByDate } from "./utils";
+import bodyParser from "body-parser";
+import { Settings } from "./web/types";
 
 const argv = yargs(hideBin(process.argv))
   .option("dev", {
@@ -16,6 +18,12 @@ const argv = yargs(hideBin(process.argv))
   .parseSync();
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.raw({ limit: "50mb" }));
+
+const SETTINGS: Settings = {
+  crop: "pad",
+};
 
 const indexHtmlPath = argv.dev ? DIST_PATH : __dirname;
 const staticPath = argv.dev ? DIST_STATIC_PATH : path.resolve(__dirname, STATIC_FOLDER);
@@ -23,11 +31,18 @@ const staticPath = argv.dev ? DIST_STATIC_PATH : path.resolve(__dirname, STATIC_
 app.use("/static", express.static(staticPath));
 app.use("/image", express.static(path.join(process.cwd(), "images")));
 
-app.get("/images", async (_, res) => {
+app.get("/status", async (_, res) => {
   const folder = path.join(process.cwd(), "images");
   const images = await getImagesByDate(folder);
 
-  res.json(images);
+  res.json({ images, settings: SETTINGS });
+});
+
+app.get("/set_crop", async (req, res) => {
+  const cropSetting = req.query.crop as Settings["crop"];
+  SETTINGS.crop = cropSetting;
+
+  res.json({ settings: SETTINGS });
 });
 
 app.get("/imagine", async (req, res) => {
@@ -58,6 +73,20 @@ app.get("/download_image", async (req, res) => {
 
   await download(url, filename);
   res.json({ status: "done", filename });
+});
+
+app.post("/upload_image", async (req, res) => {
+  const originalFilename = req.query.filename as string;
+  const [filename, extension] = originalFilename.split(".");
+  // Add the time to avoid filename collisions.
+  const newFilename = `${filename}_${performance.now()}.${extension}`;
+
+  const imageBytes = req.body as Buffer;
+
+  const filepath = path.join("images", newFilename);
+  fs.writeFileSync(filepath, imageBytes);
+  console.log("Wrote file", filepath);
+  res.send({ filepath });
 });
 
 app.get("/*", (_, res) => {
